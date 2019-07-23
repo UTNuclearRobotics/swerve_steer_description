@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  
+  <!-- Parent Frame = a frame fixed to the base, centered on the axis of rotation for this flipper's steering DOF -->
+
+  <xacro:property name="wheel_visual" value="package://swerve_steer_description/meshes/Wheel_Visual.stl" />
+  <xacro:property name="wheel_collision" value="package://swerve_steer_description/meshes/Wheel_Collision.stl" />
+  <xacro:property name="steer" value="package://swerve_steer_description/meshes/Steer.stl" />
+
+
+  <xacro:macro name="module" 
+    params="module_name parent_frame origin_x origin_y">
+
+    <!--~~~~~~~~~~~~~~~~~~~ STEERING JOINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <link name="${module_name}/steer">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <mesh filename="${steer}"/>
+        </geometry>
+        <xacro:black_material/>
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <mesh filename="${steer}"/>
+        </geometry>
+      </collision>
+
+      <inertial> 
+        <origin xyz="0 0 0" rpy="0 0 0" /> 
+        <mass value="3.92"/> 
+        <inertia  ixx="0.01" ixy = "0.01" ixz = "0.1" iyy="0.02" iyz = "0.1" izz="0.02"/>
+      </inertial>
+    </link>
+
+    <joint name="${module_name}/steering" type="continuous">
+      <parent link="${parent_frame}"/>
+      <child link="${module_name}/steer"/>
+      <origin xyz="${origin_x} ${origin_y} 0" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="104" velocity="0.8"/>
+      <joint_properties damping="0.0" friction="0.0"/>
+    </joint>
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~ WHEEL JOINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <link name="${module_name}/wheel">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <mesh filename="${wheel_visual}"/>
+        </geometry>
+        <xacro:white_material/>
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <mesh filename="${wheel_collision}"/>
+        </geometry>
+      </collision>
+
+      <inertial> 
+        <origin xyz="0 0 0" rpy="0 0 0" /> 
+        <mass value="1.6"/> 
+        <inertia  ixx="0.01" ixy = "0.01" ixz = "0.1" iyy="0.02" iyz = "0.1" izz="0.02"/>
+      </inertial>
+    </link>
+
+    <joint name="${module_name}/drive" type="continuous">
+      <parent link="${module_name}/steer"/>
+      <child link="${module_name}/wheel"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="19" velocity="3.14"/>
+      <joint_properties damping="0.0" friction="0.5"/>
+    </joint>
+
+  </xacro:macro>
+</robot>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- define macros for colors: -->
+  <xacro:macro name="red_material">
+    <material name="red">
+      <color rgba=".82 0.06 0.06 1"/>
+    </material>
+  </xacro:macro>
+  <xacro:macro name="silver_material">
+    <material name="silver">
+      <color rgba="0.6 0.6 0.6 1"/>
+    </material>
+  </xacro:macro>
+  <xacro:macro name="black_material">
+    <material name="black">
+      <color rgba="0 0 0 1"/>
+    </material>
+  </xacro:macro>
+  <xacro:macro name="beige_material">
+    <material name="beige">
+      <color rgba="0.96 0.945 0.871 1"/>
+    </material>
+  </xacro:macro>
+  <xacro:macro name="burnt_orange_material">
+    <material name="burnt_orange">
+      <color rgba="0.8 0.33 0.0 1"/>
+    </material>
+  </xacro:macro>
+  <xacro:macro name="white_material">
+    <material name="white">
+      <color rgba="1 1 1 1"/>
+    </material>
+  </xacro:macro>
+  <xacro:macro name="florida_blue_material">
+    <material name="florida_blue">
+      <color rgba="0 0.13 0.65 1"/>
+    </material>
+  </xacro:macro>
+</robot>

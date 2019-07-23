@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="swerve-steer">
+
+  <!-- *************************** XACRO MACROS *************************** -->
+
+  <xacro:include filename="$(find swerve_steer_description)/urdf/common_materials.xacro" />
+
+  <xacro:property name="width" value="0.63500" />
+  <xacro:property name="length" value="0.58877" />
+  <xacro:property name="square_length" value="0.43180" />
+
+  <xacro:include filename="./module.xacro"/>
+
+  <xacro:property name="body_visual" value="package://swerve_steer_description/meshes/Main_Box_Visual.stl" />
+  <xacro:property name="body_collision" value="package://swerve_steer_description/meshes/Main_Box_Collision.stl" />
+
+  <!-- ************************* ROBOT DEFINITION ************************* -->
+
+  <link name="world" />
+  <joint name="world_base"  type="floating">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="world"/>
+    <child link="dummy"/>
+  </joint>
+
+  <!-- just for visualization: base post -->
+  <link name="dummy"/>
+  <joint name="dummy_to_base"  type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="dummy"/>
+    <child link="base_link"/>
+  </joint>
+
+  <link name="map" />
+  <joint name="world_map"  type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="world"/>
+    <child link="map"/>
+  </joint>
+
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="${body_visual}"/>
+      </geometry>
+      <xacro:burnt_orange_material/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="${body_collision}"/>
+      </geometry>
+    </collision>
+    <inertial> 
+      <origin xyz="0 0 0" rpy="0 0 0"/> 
+      <mass value="50"/> 
+      <inertia  ixx="0.01" ixy = "0.01" ixz = "0.1" iyy="0.02" iyz = "0.1" izz="0.02"/>
+    </inertial>
+  </link>
+
+  <xacro:module module_name="module_1" parent_frame="base_link" origin_x="${square_length/2}" origin_y="${square_length/2}"  />
+
+  <xacro:module module_name="module_2" parent_frame="base_link" origin_x="${-1 * square_length/2}" origin_y="${square_length/2}"  />
+
+  <xacro:module module_name="module_3" parent_frame="base_link" origin_x="${-1 * square_length/2}" origin_y="${-1 * square_length/2}"  />
+
+  <xacro:module module_name="module_4" parent_frame="base_link" origin_x="${square_length/2}" origin_y="${-1 * square_length/2}" />
+
+</robot>
